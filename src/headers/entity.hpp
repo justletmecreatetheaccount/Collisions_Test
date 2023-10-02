@@ -9,10 +9,10 @@ class Entity {
     
     sf::Vector2f speed;
     sf::Vector2f acceleration;
-    sf::Vector2f previousPosition;
     sf::CircleShape shape; // also has position
     
     public:
+    sf::Vector2f previousPosition;
     Entity (sf::Vector2f initPosition ,float radius, sf::Color color = sf::Color::Green,
             int points = 30, sf::Vector2f initSpeed = sf::Vector2f(0,0));
     

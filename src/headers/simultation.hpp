@@ -9,7 +9,7 @@
 class Simulation {
     sf::RenderWindow* window;
     bool gravityToggle = true;
-    static constexpr float GRAVITY_VALUE = 9.81f;
+    static constexpr float GRAVITY_VALUE = 500.0f;
     static constexpr float COLLISION_ELASTICITY = 0.5f;
     public:
     std::vector<Entity> allEntityList; 

@@ -8,6 +8,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <ctime>
 #include <iostream>
+#include <queue>
 
 int main()
 {
@@ -16,17 +17,22 @@ int main()
 
     sf::Clock frameClock;
     int timerReference = 0;
-    const int MAX_AUTO_ENTITY = 10;
+    int waitTime = 1;
+    const int MAX_AUTO_ENTITY = 100;
     sf::Clock runningClock;
     float frameTime = 0;
+
+    int subSteps = 8;
+
+    //sim.addEntity(1, sf::Vector2f(100,100), 15.0f, sf::Color::Red, 30, sf::Vector2f());
 
     runningClock.restart();
     while (window.isOpen())
     {   
-        if (frameClock.getElapsedTime().asSeconds() > timerReference
+        if (runningClock.getElapsedTime().asSeconds() > timerReference
                 && sim.allEntityList.size() < MAX_AUTO_ENTITY) {
-            timerReference += 5;
-            sim.addEntity(1, sf::Vector2f(100,100), 15.0f, sf::Color::Red, 30, sf::Vector2f());
+            timerReference += waitTime;
+            sim.addEntity(1, sf::Vector2f(100,100), 15.0f, sf::Color::Red, 30, sf::Vector2f(0.1, 0.1));
         }
         frameTime = frameClock.getElapsedTime().asSeconds(); 
         frameClock.restart();
@@ -37,11 +43,10 @@ int main()
                 window.close();
         }
 
-
-        sim.resolveCollisions();
-        sim.updateAll(frameTime);
-        std::cout<<"pos : "<<sim.allEntityList[0].getShape().getPosition().x
-            <<", "<<sim.allEntityList[0].getShape().getPosition().y<<"\n";
+        for (int i = 0; i < subSteps; i++) {
+            sim.resolveCollisions();
+            sim.updateAll(frameTime/subSteps);
+        }
 
         window.clear();
         sim.drawAll();
