@@ -8,17 +8,18 @@
 #include <SFML/System/Vector2.hpp>
 #include <ctime>
 #include <iostream>
+#include <ostream>
 #include <queue>
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(1000, 500), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(1500, 900), "SFML works!");
     Simulation sim (&window);
 
     sf::Clock frameClock;
-    int timerReference = 0;
-    int waitTime = 1;
-    const int MAX_AUTO_ENTITY = 100;
+    float timerReference = 0;
+    float waitTime = 0.01f;
+    const int MAX_AUTO_ENTITY = 1000;
     sf::Clock runningClock;
     float frameTime = 0;
 
@@ -32,7 +33,7 @@ int main()
         if (runningClock.getElapsedTime().asSeconds() > timerReference
                 && sim.allEntityList.size() < MAX_AUTO_ENTITY) {
             timerReference += waitTime;
-            sim.addEntity(1, sf::Vector2f(100,100), 15.0f, sf::Color::Red, 30, sf::Vector2f(0.1, 0.1));
+            sim.addEntity(1, sf::Vector2f(100,100), 5.0f, sf::Color::Red, 30, sf::Vector2f(0.6, 0));
         }
         frameTime = frameClock.getElapsedTime().asSeconds(); 
         frameClock.restart();
@@ -47,7 +48,8 @@ int main()
             sim.resolveCollisions();
             sim.updateAll(frameTime/subSteps);
         }
-
+        std::cout<<"fps : "<<1/frameTime<<std::endl;
+        std::cout<<"entity count : "<<sim.allEntityList.size()<<std::endl;
         window.clear();
         sim.drawAll();
         //window.draw();

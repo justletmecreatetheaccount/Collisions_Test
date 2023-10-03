@@ -35,20 +35,20 @@ void Simulation::resolveCollisions() {
         if (allEntityList[i].getPosition().x + allEntityList[i].getShape().getRadius() > (*window).getSize().x) {
 
             allEntityList[i].getShape().setPosition(sf::Vector2f((*window).getSize().x - allEntityList[i].getShape().getRadius() 
-                        - (allEntityList[i].getPosition().x - allEntityList[i].previousPosition.x) * COLLISION_ELASTICITY, allEntityList[i].getPosition().y));
-            std::cout<<"Found Collision with Right\n";
+                        + (allEntityList[i].getPosition().x - allEntityList[i].previousPosition.x) * COLLISION_ELASTICITY, allEntityList[i].getPosition().y));
+            //std::cout<<"Found Collision with Right\n";
         }
         if (allEntityList[i].getPosition().x + allEntityList[i].getShape().getRadius() < 0) {
 
             allEntityList[i].getShape().setPosition(sf::Vector2f(- allEntityList[i].getShape().getRadius()
                         + (allEntityList[i].getPosition().x - allEntityList[i].previousPosition.x) * COLLISION_ELASTICITY, allEntityList[i].getPosition().y));
-            std::cout<<"Found Collision with Left\n";
+            //std::cout<<"Found Collision with Left\n";
         }
         if (allEntityList[i].getPosition().y + allEntityList[i].getShape().getRadius() > (*window).getSize().y) {
 
             allEntityList[i].getShape().setPosition(sf::Vector2f(allEntityList[i].getPosition().x, (*window).getSize().y - allEntityList[i].getShape().getRadius()
                         + (allEntityList[i].getPosition().y - allEntityList[i].previousPosition.y) * COLLISION_ELASTICITY));
-            std::cout<<"Found Collision with Down\n";
+            //std::cout<<"Found Collision with Down\n";
         }
         for (int j = i+1; j < allEntityList.size(); j++) {
             //collisions with other balls
@@ -58,22 +58,11 @@ void Simulation::resolveCollisions() {
 
             if (EjEiDist < allEntityList[i].getShape().getRadius() + allEntityList[j].getShape().getRadius()) {
 
-                allEntityList[i].getShape().setPosition(allEntityList[i].getPosition() + 0.5f * sf::Vector2f(Simulation::getUnitVector(EjEiVector) *
+                allEntityList[i].getShape().setPosition(allEntityList[i].getPosition() + 0.5f * allEntityList[j].getShape().getRadius()/allEntityList[i].getShape().getRadius() * sf::Vector2f(Simulation::getUnitVector(EjEiVector) *
                             (allEntityList[i].getShape().getRadius() + allEntityList[j].getShape().getRadius() - EjEiDist)));
-                allEntityList[j].getShape().setPosition(allEntityList[j].getPosition() + -0.5f * sf::Vector2f(Simulation::getUnitVector(EjEiVector) *
+                allEntityList[j].getShape().setPosition(allEntityList[j].getPosition() + -0.5f * allEntityList[i].getShape().getRadius()/allEntityList[j].getShape().getRadius() * sf::Vector2f(Simulation::getUnitVector(EjEiVector) *
                             (allEntityList[i].getShape().getRadius() + allEntityList[j].getShape().getRadius() - EjEiDist)));
-
-                /*
-                   allEntityList[i].updateSpeed(0, -allEntityList[i].getSpeed() + COLLISION_ELASTICITY * sf::Vector2f(std::abs(Simulation::scalarMultiplcation(allEntityList[i].getSpeed(), Simulation::getUnitVector(EjEiVector)))
-                 * Simulation::getUnitVector(EjEiVector) + allEntityList[i].getSpeed()
-                 - Simulation::scalarMultiplcation(allEntityList[i].getSpeed(), Simulation::getUnitVector(EjEiVector))
-                 * Simulation::getUnitVector(EjEiVector)));
-                 allEntityList[j].updateSpeed(0, -allEntityList[j].getSpeed() + COLLISION_ELASTICITY * sf::Vector2f(std::abs(Simulation::scalarMultiplcation(allEntityList[j].getSpeed(), Simulation::getUnitVector(EjEiVector)))
-                 * -Simulation::getUnitVector(EjEiVector) + allEntityList[j].getSpeed()
-                 - Simulation::scalarMultiplcation(allEntityList[j].getSpeed(), Simulation::getUnitVector(EjEiVector))
-                 * Simulation::getUnitVector(EjEiVector)));
-                 */
-                std::cout<<"Found Collision with other ball \n";
+                //std::cout<<"Found Collision with other ball \n";
             }
         }
     }
